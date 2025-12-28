@@ -1,87 +1,71 @@
-import { Clock, Mic, Music } from 'lucide-react';
-import { formatTimeWithUnit } from '../utils/exportUtils';
-
 const StatsCards = ({ stats, timeUnit, onTimeUnitChange }) => {
+  const formatValue = (value) => {
+    return value.toFixed(0);
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* Total Time Card */}
-      <div className="bg-spotify-darkgray p-6 rounded-lg">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 bg-spotify-green rounded-lg">
-            <Clock size={24} className="text-spotify-black" />
-          </div>
-          <h3 className="text-lg font-semibold text-spotify-lightgray">Total Time</h3>
-        </div>
-        
-        <p className="text-4xl font-bold text-white mb-4">
-          {formatTimeWithUnit(stats.totalTime, timeUnit)}
-        </p>
-        
-        <div className="flex gap-2">
-          <label className="flex items-center gap-1 cursor-pointer">
-            <input
-              type="radio"
-              name="timeUnit"
-              value="hours"
-              checked={timeUnit === 'hours'}
-              onChange={(e) => onTimeUnitChange(e.target.value)}
-              className="accent-spotify-green"
-            />
-            <span className="text-sm text-spotify-lightgray">Hours</span>
-          </label>
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
+      <div className="grid grid-cols-3 divide-x divide-spotify-green">
+        {/* Total Time Card */}
+        <div className="px-6">
+          <p className="text-5xl font-bold text-white mb-4 text-center">
+            {formatValue(stats.totalTime)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
+          </p>
           
-          <label className="flex items-center gap-1 cursor-pointer">
-            <input
-              type="radio"
-              name="timeUnit"
-              value="minutes"
-              checked={timeUnit === 'minutes'}
-              onChange={(e) => onTimeUnitChange(e.target.value)}
-              className="accent-spotify-green"
-            />
-            <span className="text-sm text-spotify-lightgray">Minutes</span>
-          </label>
-          
-          <label className="flex items-center gap-1 cursor-pointer">
-            <input
-              type="radio"
-              name="timeUnit"
-              value="seconds"
-              checked={timeUnit === 'seconds'}
-              onChange={(e) => onTimeUnitChange(e.target.value)}
-              className="accent-spotify-green"
-            />
-            <span className="text-sm text-spotify-lightgray">Seconds</span>
-          </label>
-        </div>
-      </div>
-      
-      {/* Unique Artists Card */}
-      <div className="bg-spotify-darkgray p-6 rounded-lg">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 bg-spotify-green rounded-lg">
-            <Mic size={24} className="text-spotify-black" />
+          <div className="flex justify-center gap-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="timeUnit"
+                value="hours"
+                checked={timeUnit === 'hours'}
+                onChange={(e) => onTimeUnitChange(e.target.value)}
+                className="w-4 h-4 accent-spotify-green"
+              />
+              <span className="text-sm text-white font-medium">Hours</span>
+            </label>
+            
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="timeUnit"
+                value="minutes"
+                checked={timeUnit === 'minutes'}
+                onChange={(e) => onTimeUnitChange(e.target.value)}
+                className="w-4 h-4 accent-spotify-green"
+              />
+              <span className="text-sm text-white font-medium">Minutes</span>
+            </label>
+            
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="timeUnit"
+                value="seconds"
+                checked={timeUnit === 'seconds'}
+                onChange={(e) => onTimeUnitChange(e.target.value)}
+                className="w-4 h-4 accent-spotify-green"
+              />
+              <span className="text-sm text-white font-medium">Seconds</span>
+            </label>
           </div>
-          <h3 className="text-lg font-semibold text-spotify-lightgray">Unique Artists</h3>
         </div>
         
-        <p className="text-4xl font-bold text-white">
-          {stats.uniqueArtists.toLocaleString()}
-        </p>
-      </div>
-      
-      {/* Unique Tracks Card */}
-      <div className="bg-spotify-darkgray p-6 rounded-lg">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 bg-spotify-green rounded-lg">
-            <Music size={24} className="text-spotify-black" />
-          </div>
-          <h3 className="text-lg font-semibold text-spotify-lightgray">Unique Tracks</h3>
+        {/* Unique Artists Card */}
+        <div className="px-6 text-center">
+          <p className="text-5xl font-bold text-white mb-2">
+            {stats.uniqueArtists.toLocaleString()}
+          </p>
+          <p className="text-white font-medium">Unique Artists</p>
         </div>
         
-        <p className="text-4xl font-bold text-white">
-          {stats.uniqueTracks.toLocaleString()}
-        </p>
+        {/* Unique Tracks Card */}
+        <div className="px-6 text-center">
+          <p className="text-5xl font-bold text-white mb-2">
+            {stats.uniqueTracks.toLocaleString()}
+          </p>
+          <p className="text-white font-medium">Unique Tracks</p>
+        </div>
       </div>
     </div>
   );

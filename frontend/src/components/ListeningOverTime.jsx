@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
-import { TrendingUp } from 'lucide-react';
-import { formatTimeWithUnit } from '../utils/exportUtils';
 
 const ListeningOverTime = ({ data, timeUnit }) => {
-  const [period, setPeriod] = useState('days'); // 'days', 'weeks', 'months'
+  const [period, setPeriod] = useState('weeks');
   
   const formatXAxis = (dateStr) => {
     try {
@@ -27,12 +25,12 @@ const ListeningOverTime = ({ data, timeUnit }) => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-spotify-gray p-3 rounded-lg border border-spotify-green">
+        <div className="bg-spotify-darkgray p-3 rounded-lg border-2 border-spotify-green">
           <p className="text-white font-medium">
             {formatXAxis(payload[0].payload.date)}
           </p>
           <p className="text-spotify-green font-bold">
-            {formatTimeWithUnit(payload[0].value, timeUnit)}
+            {Math.round(payload[0].value)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
           </p>
         </div>
       );
@@ -41,46 +39,46 @@ const ListeningOverTime = ({ data, timeUnit }) => {
   };
   
   return (
-    <div className="bg-spotify-darkgray p-6 rounded-lg">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-spotify-green rounded-lg">
-            <TrendingUp size={24} className="text-spotify-black" />
-          </div>
-          <h2 className="text-xl font-semibold text-white">Listening Over Time</h2>
-        </div>
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold text-white">Listening Over Time</h2>
         
-        <div className="flex bg-spotify-gray rounded-lg p-1">
-          <button
-            onClick={() => setPeriod('days')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
-              period === 'days'
-                ? 'bg-spotify-green text-spotify-black'
-                : 'text-spotify-lightgray hover:text-white'
-            }`}
-          >
-            Days
-          </button>
-          <button
-            onClick={() => setPeriod('weeks')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
-              period === 'weeks'
-                ? 'bg-spotify-green text-spotify-black'
-                : 'text-spotify-lightgray hover:text-white'
-            }`}
-          >
-            Weeks
-          </button>
-          <button
-            onClick={() => setPeriod('months')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
-              period === 'months'
-                ? 'bg-spotify-green text-spotify-black'
-                : 'text-spotify-lightgray hover:text-white'
-            }`}
-          >
-            Months
-          </button>
+        <div className="flex gap-3">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="period"
+              value="days"
+              checked={period === 'days'}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="w-4 h-4 accent-spotify-green"
+            />
+            <span className="text-sm text-white font-medium">Day</span>
+          </label>
+          
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="period"
+              value="weeks"
+              checked={period === 'weeks'}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="w-4 h-4 accent-spotify-green"
+            />
+            <span className="text-sm text-white font-medium">Week</span>
+          </label>
+          
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="period"
+              value="months"
+              checked={period === 'months'}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="w-4 h-4 accent-spotify-green"
+            />
+            <span className="text-sm text-white font-medium">Month</span>
+          </label>
         </div>
       </div>
       
@@ -96,7 +94,7 @@ const ListeningOverTime = ({ data, timeUnit }) => {
           <YAxis 
             stroke="#B3B3B3"
             style={{ fontSize: '12px' }}
-            tickFormatter={(value) => value.toFixed(0)}
+            tickFormatter={(value) => Math.round(value)}
           />
           <Tooltip content={<CustomTooltip />} />
           <Line 
@@ -104,8 +102,8 @@ const ListeningOverTime = ({ data, timeUnit }) => {
             dataKey="time" 
             stroke="#1ED760" 
             strokeWidth={2}
-            dot={{ fill: '#1ED760', r: 4 }}
-            activeDot={{ r: 6 }}
+            dot={{ fill: '#1ED760', r: 3 }}
+            activeDot={{ r: 5 }}
           />
         </LineChart>
       </ResponsiveContainer>

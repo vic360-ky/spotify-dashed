@@ -1,5 +1,5 @@
-import { Download, Image } from 'lucide-react';
 import { exportToCSV, exportDashboardAsPNG } from '../utils/exportUtils';
+import spotifyLogo from '../assets/spotify_logo_green.png';
 
 const Header = ({ data }) => {
   const handleCSVExport = () => {
@@ -11,29 +11,30 @@ const Header = ({ data }) => {
   };
 
   return (
-    <header className="bg-spotify-darkgray border-b border-spotify-gray px-8 py-4">
-      <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-spotify-green">
-          Spotify Dashed
-        </h1>
+    <header className="bg-spotify-black border-b border-spotify-gray px-8 py-6">
+      <div className="max-w-[1800px] mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <img src={spotifyLogo} alt="Spotify" className="h-12 w-12" />
+          <h1 className="text-4xl font-bold text-spotify-green">
+            Spotify Dashed
+          </h1>
+        </div>
         
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <button
             onClick={handleCSVExport}
             disabled={!data || data.length === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-spotify-gray hover:bg-spotify-green hover:text-spotify-black transition-colors rounded-full font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-spotify-gray disabled:hover:text-white"
+            className="px-6 py-3 bg-spotify-darkgray hover:bg-spotify-gray text-white transition-colors rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed border border-spotify-gray"
           >
-            <Download size={18} />
-            Export Data
+            Export data to CSV
           </button>
           
           <button
             onClick={handlePNGExport}
             disabled={!data || data.length === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-spotify-gray hover:bg-spotify-green hover:text-spotify-black transition-colors rounded-full font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-spotify-gray disabled:hover:text-white"
+            className="px-6 py-3 bg-spotify-darkgray hover:bg-spotify-gray text-white transition-colors rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed border border-spotify-gray"
           >
-            <Image size={18} />
-            Export PNG
+            Export dashboard to PNG
           </button>
         </div>
       </div>

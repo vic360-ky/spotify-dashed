@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { parseISO } from 'date-fns';
-import { RotateCcw } from 'lucide-react';
 
 const Filters = ({ availableDates, onFilterChange, onReset }) => {
   const [startDate, setStartDate] = useState(null);
@@ -32,13 +31,11 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
   };
   
   return (
-    <div className="bg-spotify-darkgray p-6 rounded-lg">
-      <h2 className="text-xl font-semibold mb-4 text-spotify-green">Filters</h2>
-      
-      <div className="flex flex-wrap items-end gap-4">
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium mb-2 text-spotify-lightgray">
-            From Date
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
+      <div className="flex flex-wrap items-end gap-6">
+        <div className="flex-1 min-w-[180px]">
+          <label className="block text-sm font-semibold mb-3 text-white">
+            From
           </label>
           <DatePicker
             selected={startDate}
@@ -49,15 +46,15 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
             maxDate={endDate || maxDate}
             minDate={minDate}
             filterDate={isDateAvailable}
-            placeholderText="Select start date"
-            className="w-full px-4 py-2 bg-spotify-gray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none"
-            dateFormat="MMM d, yyyy"
+            placeholderText="2025/01/01"
+            className="w-full px-4 py-3 bg-spotify-darkgray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none font-medium"
+            dateFormat="yyyy/MM/dd"
           />
         </div>
         
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium mb-2 text-spotify-lightgray">
-            To Date
+        <div className="flex-1 min-w-[180px]">
+          <label className="block text-sm font-semibold mb-3 text-white">
+            To
           </label>
           <DatePicker
             selected={endDate}
@@ -68,17 +65,16 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
             minDate={startDate || minDate}
             maxDate={maxDate}
             filterDate={isDateAvailable}
-            placeholderText="Select end date"
-            className="w-full px-4 py-2 bg-spotify-gray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none"
-            dateFormat="MMM d, yyyy"
+            placeholderText="2025/12/01"
+            className="w-full px-4 py-3 bg-spotify-darkgray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none font-medium"
+            dateFormat="yyyy/MM/dd"
           />
         </div>
         
         <button
           onClick={handleReset}
-          className="flex items-center gap-2 px-4 py-2 bg-spotify-gray hover:bg-spotify-green hover:text-spotify-black transition-colors rounded-lg font-medium"
+          className="px-6 py-3 bg-spotify-darkgray hover:bg-spotify-gray text-white transition-colors rounded-lg font-semibold border border-spotify-gray"
         >
-          <RotateCcw size={18} />
           Reset Filters
         </button>
       </div>

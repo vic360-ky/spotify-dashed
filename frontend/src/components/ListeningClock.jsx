@@ -1,9 +1,6 @@
 import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { Clock } from 'lucide-react';
-import { formatTimeWithUnit } from '../utils/exportUtils';
 
 const ListeningClock = ({ data, timeUnit }) => {
-  // Format data for radar chart
   const chartData = data.map(item => ({
     hour: `${item.hour}:00`,
     time: item.time,
@@ -13,12 +10,12 @@ const ListeningClock = ({ data, timeUnit }) => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-spotify-gray p-3 rounded-lg border border-spotify-green">
+        <div className="bg-spotify-darkgray p-3 rounded-lg border-2 border-spotify-green">
           <p className="text-white font-medium">
             {payload[0].payload.hour}
           </p>
           <p className="text-spotify-green font-bold">
-            {formatTimeWithUnit(payload[0].payload.time, timeUnit)}
+            {Math.round(payload[0].payload.time)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
           </p>
           <p className="text-spotify-lightgray text-sm">
             {payload[0].payload.percentage.toFixed(1)}% of total
@@ -30,34 +27,30 @@ const ListeningClock = ({ data, timeUnit }) => {
   };
   
   return (
-    <div className="bg-spotify-darkgray p-6 rounded-lg">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 bg-spotify-green rounded-lg">
-          <Clock size={24} className="text-spotify-black" />
-        </div>
-        <h2 className="text-xl font-semibold text-white">Listening Clock</h2>
-      </div>
-      
-      <ResponsiveContainer width="100%" height={400}>
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl flex items-center justify-center">
+      <ResponsiveContainer width="100%" height={500}>
         <RadarChart data={chartData}>
-          <PolarGrid stroke="#282828" />
+          <PolarGrid stroke="#1ED760" strokeWidth={1} />
           <PolarAngleAxis 
             dataKey="hour" 
-            stroke="#B3B3B3"
-            style={{ fontSize: '12px' }}
+            stroke="#FFFFFF"
+            style={{ fontSize: '14px', fontWeight: 'bold' }}
+            tick={{ fill: '#FFFFFF' }}
           />
           <PolarRadiusAxis 
             angle={90} 
             domain={[0, 'auto']}
-            stroke="#B3B3B3"
+            stroke="#1ED760"
             style={{ fontSize: '10px' }}
+            tick={{ fill: '#B3B3B3' }}
           />
           <Radar 
             name="Listening Time" 
             dataKey="time" 
             stroke="#1ED760" 
             fill="#1ED760" 
-            fillOpacity={0.6}
+            fillOpacity={0.5}
+            strokeWidth={2}
           />
           <Tooltip content={<CustomTooltip />} />
         </RadarChart>

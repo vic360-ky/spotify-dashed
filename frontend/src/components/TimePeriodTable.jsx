@@ -1,81 +1,67 @@
 import { useState } from 'react';
-import { Table } from 'lucide-react';
-import { formatTimeWithUnit } from '../utils/exportUtils';
 
 const TimePeriodTable = ({ data, timeUnit }) => {
-  const [mode, setMode] = useState('artist'); // 'artist' or 'song'
+  const [mode, setMode] = useState('artist');
+  
+  const formatValue = (value) => {
+    return Math.round(value);
+  };
   
   return (
-    <div className="bg-spotify-darkgray p-6 rounded-lg">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-spotify-green rounded-lg">
-            <Table size={24} className="text-spotify-black" />
-          </div>
-          <h2 className="text-xl font-semibold text-white">Time Period Breakdown</h2>
-        </div>
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold text-white">Time Period</h2>
         
-        <div className="flex bg-spotify-gray rounded-lg p-1">
+        <div className="flex bg-spotify-darkgray rounded-lg p-1 border border-spotify-gray">
           <button
             onClick={() => setMode('artist')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
+            className={`px-5 py-2 rounded-md transition-colors font-semibold ${
               mode === 'artist'
-                ? 'bg-spotify-green text-spotify-black'
+                ? 'bg-spotify-gray text-white'
                 : 'text-spotify-lightgray hover:text-white'
             }`}
           >
-            Top Artist
+            Artists
           </button>
           <button
             onClick={() => setMode('song')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
+            className={`px-5 py-2 rounded-md transition-colors font-semibold ${
               mode === 'song'
-                ? 'bg-spotify-green text-spotify-black'
+                ? 'bg-spotify-gray text-white'
                 : 'text-spotify-lightgray hover:text-white'
             }`}
           >
-            Top Song
+            Songs
           </button>
         </div>
       </div>
       
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-spotify-gray">
-              <th className="text-left py-3 px-4 text-spotify-lightgray font-semibold">
-                Time Period
-              </th>
-              <th className="text-left py-3 px-4 text-spotify-lightgray font-semibold">
-                {mode === 'artist' ? 'Top Artist' : 'Top Song'}
-              </th>
-              <th className="text-right py-3 px-4 text-spotify-lightgray font-semibold">
-                {mode === 'artist' ? 'Time' : 'Plays'}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr 
-                key={index}
-                className="border-b border-spotify-gray/50 hover:bg-spotify-gray/30 transition-colors"
-              >
-                <td className="py-3 px-4 text-white font-medium">
+      <div className="space-y-3">
+        {data.map((row, index) => (
+          <div 
+            key={index}
+            className="bg-spotify-darkgray p-4 rounded-lg border border-spotify-gray"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-semibold mb-1">
                   {row.period}
-                </td>
-                <td className="py-3 px-4 text-white">
+                </p>
+                <p className="text-spotify-lightgray text-sm truncate">
                   {row.item}
-                </td>
-                <td className="py-3 px-4 text-right text-spotify-green font-semibold">
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-spotify-green font-bold text-lg">
                   {mode === 'artist' 
-                    ? formatTimeWithUnit(row.value, timeUnit)
+                    ? `${formatValue(row.value)} ${timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}`
                     : `${row.value} plays`
                   }
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

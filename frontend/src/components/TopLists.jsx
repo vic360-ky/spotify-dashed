@@ -1,28 +1,25 @@
 import { useState } from 'react';
-import { formatTimeWithUnit } from '../utils/exportUtils';
-import { Trophy } from 'lucide-react';
 
 const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }) => {
-  const [mode, setMode] = useState('artists'); // 'artists' or 'songs'
+  const [mode, setMode] = useState('artists');
   
   const data = mode === 'artists' ? topArtists : topTracks;
   
+  const formatValue = (value) => {
+    return Math.round(value);
+  };
+  
   return (
-    <div className="bg-spotify-darkgray p-6 rounded-lg">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-spotify-green rounded-lg">
-            <Trophy size={24} className="text-spotify-black" />
-          </div>
-          <h2 className="text-xl font-semibold text-white">Top 10</h2>
-        </div>
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl h-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold text-white">Top 10</h2>
         
-        <div className="flex bg-spotify-gray rounded-lg p-1">
+        <div className="flex bg-spotify-darkgray rounded-lg p-1 border border-spotify-gray">
           <button
             onClick={() => setMode('artists')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
+            className={`px-5 py-2 rounded-md transition-colors font-semibold ${
               mode === 'artists'
-                ? 'bg-spotify-green text-spotify-black'
+                ? 'bg-spotify-gray text-white'
                 : 'text-spotify-lightgray hover:text-white'
             }`}
           >
@@ -30,9 +27,9 @@ const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }
           </button>
           <button
             onClick={() => setMode('songs')}
-            className={`px-4 py-2 rounded-md transition-colors font-medium ${
+            className={`px-5 py-2 rounded-md transition-colors font-semibold ${
               mode === 'songs'
-                ? 'bg-spotify-green text-spotify-black'
+                ? 'bg-spotify-gray text-white'
                 : 'text-spotify-lightgray hover:text-white'
             }`}
           >
@@ -41,7 +38,7 @@ const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }
         </div>
       </div>
       
-      <div className="space-y-2 max-h-[500px] overflow-y-auto">
+      <div className="space-y-3">
         {data.map((item, index) => {
           const isArtistMode = mode === 'artists';
           const itemKey = isArtistMode 
@@ -54,48 +51,48 @@ const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }
             <div
               key={itemKey}
               onClick={() => onItemClick(isArtistMode ? 'artist' : 'track', itemKey, item)}
-              className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
+              className={`flex items-center gap-4 p-3 rounded-full cursor-pointer transition-colors ${
                 isActive
-                  ? 'bg-spotify-green text-spotify-black'
-                  : 'bg-spotify-gray hover:bg-spotify-gray/70'
+                  ? 'bg-spotify-green'
+                  : 'bg-spotify-darkgray hover:bg-spotify-gray'
               }`}
             >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <span className={`text-lg font-bold w-6 text-center ${
-                  isActive ? 'text-spotify-black' : 'text-spotify-green'
-                }`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                isActive ? 'bg-white' : 'bg-white'
+              }`}>
+                <span className="text-lg font-bold text-spotify-black">
                   {index + 1}
                 </span>
-                
-                <div className="flex-1 min-w-0">
-                  {isArtistMode ? (
-                    <p className={`font-medium truncate ${
-                      isActive ? 'text-spotify-black' : 'text-white'
-                    }`}>
-                      {item.artist}
-                    </p>
-                  ) : (
-                    <>
-                      <p className={`font-medium truncate ${
-                        isActive ? 'text-spotify-black' : 'text-white'
-                      }`}>
-                        {item.trackName}
-                      </p>
-                      <p className={`text-sm truncate ${
-                        isActive ? 'text-spotify-black/70' : 'text-spotify-lightgray'
-                      }`}>
-                        {item.artistName}
-                      </p>
-                    </>
-                  )}
-                </div>
               </div>
               
-              <span className={`text-sm font-semibold ml-3 ${
-                isActive ? 'text-spotify-black' : 'text-spotify-green'
+              <div className="flex-1 min-w-0">
+                {isArtistMode ? (
+                  <p className={`font-semibold truncate ${
+                    isActive ? 'text-spotify-black' : 'text-white'
+                  }`}>
+                    {item.artist}
+                  </p>
+                ) : (
+                  <>
+                    <p className={`font-semibold truncate ${
+                      isActive ? 'text-spotify-black' : 'text-white'
+                    }`}>
+                      {item.trackName}
+                    </p>
+                    <p className={`text-sm truncate ${
+                      isActive ? 'text-spotify-black/70' : 'text-spotify-lightgray'
+                    }`}>
+                      {item.artistName}
+                    </p>
+                  </>
+                )}
+              </div>
+              
+              <span className={`text-sm font-semibold whitespace-nowrap ${
+                isActive ? 'text-spotify-black' : 'text-white'
               }`}>
                 {isArtistMode 
-                  ? formatTimeWithUnit(item.time, timeUnit)
+                  ? `${formatValue(item.time)} ${timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}`
                   : `${item.playCount} plays`
                 }
               </span>

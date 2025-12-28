@@ -136,7 +136,7 @@ function App() {
     <div className="min-h-screen bg-spotify-black">
       <Header data={filteredData} />
       
-      <main id="dashboard" className="max-w-[1600px] mx-auto p-8 space-y-6">
+      <main id="dashboard" className="max-w-[1800px] mx-auto p-8 space-y-6">
         {/* Filters Section */}
         <Filters
           availableDates={availableDates}
@@ -146,7 +146,7 @@ function App() {
         
         {/* Active Filter Badge */}
         {activeFilter && (
-          <div className="bg-spotify-darkgray p-4 rounded-lg flex items-center justify-between">
+          <div className="bg-spotify-darkgray p-4 rounded-lg border border-spotify-green flex items-center justify-between">
             <div>
               <span className="text-spotify-lightgray">Active Filter: </span>
               <span className="text-spotify-green font-semibold">
@@ -172,7 +172,7 @@ function App() {
           onTimeUnitChange={handleTimeUnitChange}
         />
         
-        {/* Top Lists and Charts Grid */}
+        {/* Top Lists and Listening Over Time - Side by Side */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <TopLists
             topArtists={topArtists}
@@ -188,7 +188,7 @@ function App() {
           />
         </div>
         
-        {/* Clock and Table Grid */}
+        {/* Clock and Table - Side by Side */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ListeningClock
             data={listeningByHour}
