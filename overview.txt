@@ -1,0 +1,267 @@
+Spotify Dashed - Project Plan & Architecture
+Project Overview
+A full-stack web application for visualizing Spotify listening history with interactive filtering, multiple visualization types, and export capabilities.
+Technology Stack
+Frontend
+
+React - Main UI framework
+Recharts - For line charts and polar/radial charts
+date-fns - Date manipulation and formatting
+react-datepicker - Calendar date selectors
+html-to-image - Dashboard PNG export
+Tailwind CSS - Styling with Spotify color palette customization
+
+Backend
+
+Python Flask/FastAPI - REST API server
+Pandas - Data processing and aggregation
+CORS - Cross-origin resource sharing for frontend-backend communication
+
+Project Structure
+spotify-dashed/
+├── backend/
+│   ├── app.py                 # Flask/FastAPI server
+│   ├── data_processor.py      # Data aggregation & calculations
+│   ├── requirements.txt       # Python dependencies
+│   └── data/                  # Folder for uploaded JSON files
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.jsx
+│   │   │   ├── Filters.jsx
+│   │   │   ├── StatsCards.jsx
+│   │   │   ├── TopLists.jsx
+│   │   │   ├── ListeningOverTime.jsx
+│   │   │   ├── ListeningClock.jsx
+│   │   │   └── TimePeriodTable.jsx
+│   │   ├── utils/
+│   │   │   ├── dataTransforms.js
+│   │   │   └── exportUtils.js
+│   │   ├── App.jsx
+│   │   ├── index.css          # Tailwind + custom styles
+│   │   └── main.jsx
+│   ├── package.json
+│   └── tailwind.config.js     # Spotify colors defined here
+Data Flow Architecture
+1. Initial Data Loading
+
+User uploads/selects multiple JSON files through file input
+Frontend sends files to backend /upload endpoint
+Backend aggregates all JSON files into single Pandas DataFrame
+Backend calculates: seconds, minutes, hours for each track
+Backend returns processed data + metadata (available date range, unique artists/tracks)
+Frontend stores processed data in React state
+
+2. Filter State Management
+
+Global Filter Context using React Context API or state management
+Filters affect all components simultaneously:
+
+Date range (from/to)
+Time unit (hours/minutes/seconds)
+Active artist/song filter (from clicking top lists)
+
+
+All visualizations subscribe to filter changes and recalculate
+
+3. Component Data Processing
+
+Each component receives filtered dataset
+Performs local aggregations/calculations as needed
+Updates visualizations reactively
+
+Detailed Component Specifications
+1. Header Component
+Elements:
+
+Left: "Spotify Dashed" logo/title (Spotify green #1ED760)
+Right: Two buttons
+
+"Export Data (CSV)" - downloads filtered data
+"Export Dashboard (PNG)" - captures entire viewport as image
+
+
+
+2. Filters Section
+Elements:
+
+Date Range Filter:
+
+"From Date" picker (only dates with data selectable)
+"To Date" picker (only dates with data selectable)
+"Reset Filters" button - clears all filters globally
+
+
+Styling: Dark background (#121212), white text, green accents
+
+3. Stats Cards Section
+Three Cards Side-by-Side:
+
+Total Time Played
+
+Large number display
+Radio buttons below: Hours | Minutes | Seconds
+Selection affects ALL time displays on dashboard
+
+
+Unique Artists
+
+Count of distinct artists in filtered data
+
+
+Unique Tracks
+
+Count of distinct tracks in filtered data
+
+
+
+Styling: Card-based layout, dark backgrounds with green accents
+4. Top 10 Lists Section
+Features:
+
+Toggle: "Artists" | "Songs"
+Ranked list (1-10) with:
+
+Artists mode: Artist name + total time played (right-aligned)
+Songs mode: Track name (with artist subtitle) + play count (right-aligned)
+
+
+Clickable items that apply filter to entire dashboard
+Active filter highlighted in green
+Scrollable if needed
+
+5. Listening Over Time Chart
+Features:
+
+Line chart: X-axis = Date, Y-axis = Time
+Radio selector: Days | Weeks | Months (changes X-axis granularity)
+Aggregates data based on selection
+Responsive to all filters
+Tooltip showing exact values on hover
+
+6. Listening Clock Chart
+Features:
+
+Polar/radial bar chart with 24 segments (one per hour)
+Each segment shows:
+
+Total time listened in that hour
+Percentage of total listening
+
+
+12am at top, hours progress clockwise
+Hover tooltips with details
+Updates with all filters
+
+7. Time Period Table
+Structure:
+
+4 rows representing time blocks:
+
+🌙 12am-6am
+🌅 6am-12pm
+☀️ 12pm-6pm
+🌆 6pm-12am
+
+
+Toggle: "Top Artist" | "Top Song" per time period
+Columns:
+
+Time Period (with emoji)
+Song/Artist name
+Plays (song mode) or Time (artist mode)
+
+
+
+Key Technical Considerations
+Frontend State Management
+
+Use React Context for global filters (date range, time unit, active item filter)
+Local state for component-specific UI (toggles, selections)
+Derived state for filtered/aggregated data (useMemo for performance)
+
+Data Processing Strategy
+
+Backend handles initial heavy lifting (file parsing, base calculations)
+Frontend handles filtering and real-time aggregations (using native JS array methods)
+Consider data size: if datasets are very large (>100k rows), may need backend filtering endpoints
+
+Performance Optimizations
+
+Memoize expensive calculations (React.useMemo)
+Debounce filter changes if needed
+Virtual scrolling for long lists if dataset is massive
+Lazy load chart libraries
+
+Date Handling
+
+Use date-fns consistently for all date operations
+Store dates in ISO format
+Handle timezone considerations (user's local time vs UTC)
+
+Export Functionality
+
+CSV Export: Convert filtered DataFrame to CSV blob, trigger download
+PNG Export: Use html-to-image library to capture dashboard div, trigger download
+Consider adding loading states during export operations
+
+Styling Approach
+Color Palette
+
+Primary: #1ED760 (Spotify Green) - CTAs, active states, accents
+Background: #121212 (Spotify Black) - main background
+Surface: #181818 (slightly lighter) - cards, containers
+Text: #FFFFFF (White) - primary text
+Text Secondary: #B3B3B3 - secondary text
+
+Layout
+
+Responsive grid system
+Max-width container for dashboard
+Appropriate spacing/padding for readability
+Dark theme throughout
+
+Development Phases
+Phase 1: Backend Setup
+
+Set up Flask/FastAPI server
+Create data processing module
+Implement file upload and aggregation
+Test with sample data
+
+Phase 2: Frontend Foundation
+
+Initialize React app with Tailwind
+Set up routing (if needed)
+Create component structure
+Implement Context for global state
+
+Phase 3: Core Components
+
+Header with export placeholders
+Filters section with date pickers
+Stats cards with time unit selector
+Connect filters to stats
+
+Phase 4: Visualizations
+
+Top 10 lists with filtering
+Listening over time chart
+Listening clock polar chart
+Time period table
+
+Phase 5: Interactivity & Polish
+
+Implement all filter interactions
+Add export functionality (CSV & PNG)
+Responsive design adjustments
+Performance optimization
+
+Phase 6: Testing & Refinement
+
+Test with real Spotify data at scale
+Edge case handling
+UX improvements
+Documentation
