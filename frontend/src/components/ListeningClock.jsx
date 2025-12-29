@@ -26,23 +26,48 @@ const ListeningClock = ({ data, timeUnit }) => {
     return null;
   };
   
+  // Custom tick component to show every other hour
+  const CustomTick = ({ payload, x, y, textAnchor, stroke, radius }) => {
+    const hour = parseInt(payload.value.split(':')[0]);
+    
+    // Only show even hours (0, 2, 4, 6, etc.)
+    if (hour % 2 !== 0) {
+      return null;
+    }
+    
+    return (
+      <g className="recharts-layer recharts-polar-angle-axis-tick">
+        <text
+          radius={radius}
+          stroke="none"
+          x={x}
+          y={y}
+          className="recharts-text recharts-polar-angle-axis-tick-value"
+          textAnchor={textAnchor}
+          fill="#FFFFFF"
+          style={{ fontSize: '14px', fontWeight: 'bold' }}
+        >
+          <tspan x={x} dy="0em">{payload.value}</tspan>
+        </text>
+      </g>
+    );
+  };
+  
   return (
     <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl flex items-center justify-center">
-      <ResponsiveContainer width="100%" height={500}>
+      <ResponsiveContainer width="100%" height={400}>
         <RadarChart data={chartData}>
           <PolarGrid stroke="#1ED760" strokeWidth={1} />
           <PolarAngleAxis 
             dataKey="hour" 
             stroke="#FFFFFF"
-            style={{ fontSize: '14px', fontWeight: 'bold' }}
-            tick={{ fill: '#FFFFFF' }}
+            tick={<CustomTick />}
           />
           <PolarRadiusAxis 
             angle={90} 
             domain={[0, 'auto']}
-            stroke="#1ED760"
-            style={{ fontSize: '10px' }}
-            tick={{ fill: '#B3B3B3' }}
+            tick={false}
+            axisLine={false}
           />
           <Radar 
             name="Listening Time" 

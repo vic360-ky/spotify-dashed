@@ -9,7 +9,7 @@ const StatsCards = ({ stats, timeUnit, onTimeUnitChange }) => {
         {/* Total Time Card */}
         <div className="px-6">
           <p className="text-5xl font-bold text-white mb-4 text-center">
-            {formatValue(stats.totalTime)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
+            {formatValue(stats.totalTime)}
           </p>
           
           <div className="flex justify-center gap-4">

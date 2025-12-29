@@ -64,7 +64,7 @@ function App() {
     }
   };
   
-  // Apply all filters to get filtered data
+  // Apply all filters to get filtered data (for visualizations, not top 10)
   const filteredData = useMemo(() => {
     if (!rawData) return [];
     
@@ -90,10 +90,26 @@ function App() {
     return data;
   }, [rawData, dateFilter, activeFilter]);
   
+  // Separate filtered data for Top 10 (only date filter, not artist/track filter)
+  const filteredDataForTopLists = useMemo(() => {
+    if (!rawData) return [];
+    
+    let data = rawData;
+    
+    // Apply only date range filter for top lists
+    if (dateFilter.startDate || dateFilter.endDate) {
+      const startDate = dateFilter.startDate ? dateFilter.startDate.toISOString().split('T')[0] : null;
+      const endDate = dateFilter.endDate ? dateFilter.endDate.toISOString().split('T')[0] : null;
+      data = filterByDateRange(data, startDate, endDate);
+    }
+    
+    return data;
+  }, [rawData, dateFilter]);
+  
   // Calculate all derived data
   const stats = useMemo(() => calculateStats(filteredData, timeUnit), [filteredData, timeUnit]);
-  const topArtists = useMemo(() => getTopArtists(filteredData, 10, timeUnit), [filteredData, timeUnit]);
-  const topTracks = useMemo(() => getTopTracks(filteredData, 10), [filteredData]);
+  const topArtists = useMemo(() => getTopArtists(filteredDataForTopLists, 10, timeUnit), [filteredDataForTopLists, timeUnit]);
+  const topTracks = useMemo(() => getTopTracks(filteredDataForTopLists, 10), [filteredDataForTopLists]);
   const listeningOverTime = useMemo(() => aggregateByTimePeriod(filteredData, timePeriod, timeUnit), [filteredData, timePeriod, timeUnit]);
   const listeningByHour = useMemo(() => getListeningByHour(filteredData, timeUnit), [filteredData, timeUnit]);
   const timePeriodDataArtists = useMemo(() => getTopItemByTimePeriod(filteredData, 'artist', timeUnit), [filteredData, timeUnit]);

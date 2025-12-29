@@ -32,8 +32,8 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
   
   return (
     <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
-      <div className="flex flex-wrap items-end gap-6">
-        <div className="flex-1 min-w-[180px]">
+      <div className="flex items-end gap-4">
+        <div className="w-40">
           <label className="block text-sm font-semibold mb-3 text-white">
             From
           </label>
@@ -47,12 +47,12 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
             minDate={minDate}
             filterDate={isDateAvailable}
             placeholderText="2025/01/01"
-            className="w-full px-4 py-3 bg-spotify-darkgray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none font-medium"
+            className="w-full px-3 py-3 bg-spotify-darkgray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none font-medium text-sm"
             dateFormat="yyyy/MM/dd"
           />
         </div>
         
-        <div className="flex-1 min-w-[180px]">
+        <div className="w-40">
           <label className="block text-sm font-semibold mb-3 text-white">
             To
           </label>
@@ -66,14 +66,14 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
             maxDate={maxDate}
             filterDate={isDateAvailable}
             placeholderText="2025/12/01"
-            className="w-full px-4 py-3 bg-spotify-darkgray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none font-medium"
+            className="w-full px-3 py-3 bg-spotify-darkgray text-white rounded-lg border border-spotify-gray focus:border-spotify-green focus:outline-none font-medium text-sm"
             dateFormat="yyyy/MM/dd"
           />
         </div>
         
         <button
           onClick={handleReset}
-          className="px-6 py-3 bg-spotify-darkgray hover:bg-spotify-gray text-white transition-colors rounded-lg font-semibold border border-spotify-gray"
+          className="px-6 py-3 bg-spotify-darkgray hover:bg-spotify-gray text-white transition-colors rounded-lg font-semibold border border-spotify-gray whitespace-nowrap"
         >
           Reset Filters
         </button>
