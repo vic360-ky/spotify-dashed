@@ -31,7 +31,7 @@ function App() {
   const [dateFilter, setDateFilter] = useState({ startDate: null, endDate: null });
   const [activeFilter, setActiveFilter] = useState(null); // { type: 'artist'|'track', value: string, data: object }
   const [timeUnit, setTimeUnit] = useState('minutes');
-  const [timePeriod, setTimePeriod] = useState('days');
+  const [timePeriod, setTimePeriod] = useState('weeks'); // This now affects data aggregation
   
   // Upload handler
   const handleUpload = async (files) => {
@@ -96,7 +96,7 @@ function App() {
   const topTracks = useMemo(() => getTopTracks(filteredData, 10), [filteredData]);
   const listeningOverTime = useMemo(() => aggregateByTimePeriod(filteredData, timePeriod, timeUnit), [filteredData, timePeriod, timeUnit]);
   const listeningByHour = useMemo(() => getListeningByHour(filteredData, timeUnit), [filteredData, timeUnit]);
-  const timePeriodData = useMemo(() => getTopItemByTimePeriod(filteredData, 'artist', timeUnit), [filteredData, timeUnit]);
+  const timePeriodDataArtists = useMemo(() => getTopItemByTimePeriod(filteredData, 'artist', timeUnit), [filteredData, timeUnit]);
   const timePeriodDataSongs = useMemo(() => getTopItemByTimePeriod(filteredData, 'track', timeUnit), [filteredData, timeUnit]);
   
   // Handle filter changes
@@ -122,6 +122,10 @@ function App() {
     setTimeUnit(unit);
   };
   
+  const handleTimePeriodChange = (period) => {
+    setTimePeriod(period);
+  };
+  
   // Show upload screen if no data
   if (!rawData) {
     return (
@@ -137,12 +141,23 @@ function App() {
       <Header data={filteredData} />
       
       <main id="dashboard" className="max-w-[1800px] mx-auto p-8 space-y-6">
-        {/* Filters Section */}
-        <Filters
-          availableDates={availableDates}
-          onFilterChange={handleDateFilterChange}
-          onReset={handleResetFilters}
-        />
+        {/* Filters and Stats - Horizontal Layout */}
+        <div className="flex gap-6">
+          <div className="flex-1">
+            <Filters
+              availableDates={availableDates}
+              onFilterChange={handleDateFilterChange}
+              onReset={handleResetFilters}
+            />
+          </div>
+          <div className="flex-[2]">
+            <StatsCards
+              stats={stats}
+              timeUnit={timeUnit}
+              onTimeUnitChange={handleTimeUnitChange}
+            />
+          </div>
+        </div>
         
         {/* Active Filter Badge */}
         {activeFilter && (
@@ -165,40 +180,43 @@ function App() {
           </div>
         )}
         
-        {/* Stats Cards */}
-        <StatsCards
-          stats={stats}
-          timeUnit={timeUnit}
-          onTimeUnitChange={handleTimeUnitChange}
-        />
-        
-        {/* Top Lists and Listening Over Time - Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <TopLists
-            topArtists={topArtists}
-            topTracks={topTracks}
-            timeUnit={timeUnit}
-            activeFilter={activeFilter}
-            onItemClick={handleItemClick}
-          />
+        {/* Top Lists and Charts - New Layout */}
+        <div className="flex gap-6">
+          {/* Left Side: Top Lists (1/3 width) */}
+          <div className="flex-1">
+            <TopLists
+              topArtists={topArtists}
+              topTracks={topTracks}
+              timeUnit={timeUnit}
+              activeFilter={activeFilter}
+              onItemClick={handleItemClick}
+            />
+          </div>
           
-          <ListeningOverTime
-            data={listeningOverTime}
-            timeUnit={timeUnit}
-          />
-        </div>
-        
-        {/* Clock and Table - Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ListeningClock
-            data={listeningByHour}
-            timeUnit={timeUnit}
-          />
-          
-          <TimePeriodTable
-            data={timePeriodData}
-            timeUnit={timeUnit}
-          />
+          {/* Right Side: Charts (2/3 width) */}
+          <div className="flex-[2] flex flex-col gap-6">
+            {/* Listening Over Time Chart */}
+            <ListeningOverTime
+              data={listeningOverTime}
+              timeUnit={timeUnit}
+              timePeriod={timePeriod}
+              onTimePeriodChange={handleTimePeriodChange}
+            />
+            
+            {/* Clock and Table - Side by Side */}
+            <div className="grid grid-cols-2 gap-6">
+              <ListeningClock
+                data={listeningByHour}
+                timeUnit={timeUnit}
+              />
+              
+              <TimePeriodTable
+                dataArtists={timePeriodDataArtists}
+                dataSongs={timePeriodDataSongs}
+                timeUnit={timeUnit}
+              />
+            </div>
+          </div>
         </div>
       </main>
     </div>

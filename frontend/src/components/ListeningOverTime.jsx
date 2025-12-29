@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 
-const ListeningOverTime = ({ data, timeUnit }) => {
-  const [period, setPeriod] = useState('weeks');
+const ListeningOverTime = ({ data, timeUnit, timePeriod, onTimePeriodChange }) => {
   
   const formatXAxis = (dateStr) => {
     try {
       const date = new Date(dateStr);
-      switch (period) {
+      switch (timePeriod) {
         case 'weeks':
           return format(date, 'MMM d');
         case 'months':
@@ -30,7 +29,7 @@ const ListeningOverTime = ({ data, timeUnit }) => {
             {formatXAxis(payload[0].payload.date)}
           </p>
           <p className="text-spotify-green font-bold">
-            {Math.round(payload[0].value)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
+            {Math.floor(payload[0].value)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
           </p>
         </div>
       );
@@ -49,8 +48,8 @@ const ListeningOverTime = ({ data, timeUnit }) => {
               type="radio"
               name="period"
               value="days"
-              checked={period === 'days'}
-              onChange={(e) => setPeriod(e.target.value)}
+              checked={timePeriod === 'days'}
+              onChange={(e) => onTimePeriodChange(e.target.value)}
               className="w-4 h-4 accent-spotify-green"
             />
             <span className="text-sm text-white font-medium">Day</span>
@@ -61,8 +60,8 @@ const ListeningOverTime = ({ data, timeUnit }) => {
               type="radio"
               name="period"
               value="weeks"
-              checked={period === 'weeks'}
-              onChange={(e) => setPeriod(e.target.value)}
+              checked={timePeriod === 'weeks'}
+              onChange={(e) => onTimePeriodChange(e.target.value)}
               className="w-4 h-4 accent-spotify-green"
             />
             <span className="text-sm text-white font-medium">Week</span>
@@ -73,8 +72,8 @@ const ListeningOverTime = ({ data, timeUnit }) => {
               type="radio"
               name="period"
               value="months"
-              checked={period === 'months'}
-              onChange={(e) => setPeriod(e.target.value)}
+              checked={timePeriod === 'months'}
+              onChange={(e) => onTimePeriodChange(e.target.value)}
               className="w-4 h-4 accent-spotify-green"
             />
             <span className="text-sm text-white font-medium">Month</span>
@@ -94,7 +93,7 @@ const ListeningOverTime = ({ data, timeUnit }) => {
           <YAxis 
             stroke="#B3B3B3"
             style={{ fontSize: '12px' }}
-            tickFormatter={(value) => Math.round(value)}
+            tickFormatter={(value) => Math.floor(value)}
           />
           <Tooltip content={<CustomTooltip />} />
           <Line 

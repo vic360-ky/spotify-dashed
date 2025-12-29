@@ -15,7 +15,7 @@ const ListeningClock = ({ data, timeUnit }) => {
             {payload[0].payload.hour}
           </p>
           <p className="text-spotify-green font-bold">
-            {Math.round(payload[0].payload.time)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
+            {Math.floor(payload[0].payload.time)} {timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}
           </p>
           <p className="text-spotify-lightgray text-sm">
             {payload[0].payload.percentage.toFixed(1)}% of total

@@ -6,7 +6,7 @@ const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }
   const data = mode === 'artists' ? topArtists : topTracks;
   
   const formatValue = (value) => {
-    return Math.round(value);
+    return Math.floor(value);
   };
   
   return (

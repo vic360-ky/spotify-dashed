@@ -1,6 +1,6 @@
 const StatsCards = ({ stats, timeUnit, onTimeUnitChange }) => {
   const formatValue = (value) => {
-    return value.toFixed(0);
+    return Math.floor(value);
   };
 
   return (

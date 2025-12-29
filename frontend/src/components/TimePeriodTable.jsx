@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
-const TimePeriodTable = ({ data, timeUnit }) => {
+const TimePeriodTable = ({ dataArtists, dataSongs, timeUnit }) => {
   const [mode, setMode] = useState('artist');
   
+  const data = mode === 'artist' ? dataArtists : dataSongs;
+  
   const formatValue = (value) => {
-    return Math.round(value);
+    return Math.floor(value);
   };
   
   return (
@@ -42,17 +44,17 @@ const TimePeriodTable = ({ data, timeUnit }) => {
             key={index}
             className="bg-spotify-darkgray p-4 rounded-lg border border-spotify-gray"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold mb-1">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4 flex-1 min-w-0">
+                <p className="text-white font-semibold text-lg whitespace-nowrap">
                   {row.period}
                 </p>
-                <p className="text-spotify-lightgray text-sm truncate">
+                <p className="text-white text-lg font-medium truncate">
                   {row.item}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-spotify-green font-bold text-lg">
+                <p className="text-spotify-green font-bold text-lg whitespace-nowrap">
                   {mode === 'artist' 
                     ? `${formatValue(row.value)} ${timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}`
                     : `${row.value} plays`
