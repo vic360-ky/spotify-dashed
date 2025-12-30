@@ -12,6 +12,14 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
   const minDate = dateObjects.length > 0 ? new Date(Math.min(...dateObjects)) : null;
   const maxDate = dateObjects.length > 0 ? new Date(Math.max(...dateObjects)) : null;
   
+  // Set default dates on mount
+  useEffect(() => {
+    if (minDate && maxDate && !startDate && !endDate) {
+      setStartDate(minDate);
+      setEndDate(maxDate);
+    }
+  }, [minDate, maxDate]);
+  
   useEffect(() => {
     onFilterChange({ startDate, endDate });
   }, [startDate, endDate]);
@@ -31,8 +39,8 @@ const Filters = ({ availableDates, onFilterChange, onReset }) => {
   };
   
   return (
-    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
-      <div className="flex items-end gap-4">
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl h-full flex items-center">
+      <div className="flex items-end gap-4 w-full">
         <div className="w-40">
           <label className="block text-sm font-semibold mb-3 text-white">
             From

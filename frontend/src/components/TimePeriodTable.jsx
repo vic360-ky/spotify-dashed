@@ -10,7 +10,7 @@ const TimePeriodTable = ({ dataArtists, dataSongs, timeUnit }) => {
   };
   
   return (
-    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-3xl font-bold text-white">Time Period</h2>
         
@@ -45,7 +45,7 @@ const TimePeriodTable = ({ dataArtists, dataSongs, timeUnit }) => {
             className="bg-spotify-darkgray p-4 rounded-lg border border-spotify-gray"
           >
             <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="flex items-center gap-4 flex-1 min-w-0 overflow-hidden">
                 <p className="text-white font-semibold text-lg whitespace-nowrap">
                   {row.period}
                 </p>
@@ -53,7 +53,7 @@ const TimePeriodTable = ({ dataArtists, dataSongs, timeUnit }) => {
                   {row.item}
                 </p>
               </div>
-              <div className="text-right">
+              <div className="text-right flex-shrink-0">
                 <p className="text-spotify-green font-bold text-lg whitespace-nowrap">
                   {mode === 'artist' 
                     ? `${formatValue(row.value)} ${timeUnit === 'hours' ? 'hours' : timeUnit === 'seconds' ? 'secs' : 'mins'}`

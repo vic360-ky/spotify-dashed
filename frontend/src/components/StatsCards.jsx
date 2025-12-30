@@ -7,12 +7,12 @@ const StatsCards = ({ stats, timeUnit, onTimeUnitChange }) => {
     <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
       <div className="grid grid-cols-3 divide-x divide-spotify-green">
         {/* Total Time Card */}
-        <div className="px-6">
-          <p className="text-5xl font-bold text-white mb-4 text-center">
+        <div className="px-6 flex flex-col">
+          <p className="text-5xl font-bold text-white text-center h-[60px] flex items-center justify-center">
             {formatValue(stats.totalTime)}
           </p>
           
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 h-[32px] items-center">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -52,19 +52,19 @@ const StatsCards = ({ stats, timeUnit, onTimeUnitChange }) => {
         </div>
         
         {/* Unique Artists Card */}
-        <div className="px-6 text-center">
-          <p className="text-5xl font-bold text-white mb-2">
+        <div className="px-6 text-center flex flex-col">
+          <p className="text-5xl font-bold text-white h-[60px] flex items-center justify-center">
             {stats.uniqueArtists.toLocaleString()}
           </p>
-          <p className="text-white font-medium">Unique Artists</p>
+          <p className="text-white font-medium h-[32px] flex items-center justify-center">Unique Artists</p>
         </div>
         
         {/* Unique Tracks Card */}
-        <div className="px-6 text-center">
-          <p className="text-5xl font-bold text-white mb-2">
+        <div className="px-6 text-center flex flex-col">
+          <p className="text-5xl font-bold text-white h-[60px] flex items-center justify-center">
             {stats.uniqueTracks.toLocaleString()}
           </p>
-          <p className="text-white font-medium">Unique Tracks</p>
+          <p className="text-white font-medium h-[32px] flex items-center justify-center">Unique Tracks</p>
         </div>
       </div>
     </div>

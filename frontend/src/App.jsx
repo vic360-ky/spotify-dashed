@@ -159,14 +159,14 @@ function App() {
       <main id="dashboard" className="max-w-[1800px] mx-auto p-8 space-y-6">
         {/* Filters and Stats - Horizontal Layout */}
         <div className="flex gap-6">
-          <div className="flex-1">
+          <div className="w-[30%] flex">
             <Filters
               availableDates={availableDates}
               onFilterChange={handleDateFilterChange}
               onReset={handleResetFilters}
             />
           </div>
-          <div className="flex-[2]">
+          <div className="w-[70%]">
             <StatsCards
               stats={stats}
               timeUnit={timeUnit}
@@ -175,31 +175,10 @@ function App() {
           </div>
         </div>
         
-        {/* Active Filter Badge */}
-        {activeFilter && (
-          <div className="bg-spotify-darkgray p-4 rounded-lg border border-spotify-green flex items-center justify-between">
-            <div>
-              <span className="text-spotify-lightgray">Active Filter: </span>
-              <span className="text-spotify-green font-semibold">
-                {activeFilter.type === 'artist' 
-                  ? activeFilter.value 
-                  : activeFilter.data.trackName + ' - ' + activeFilter.data.artistName
-                }
-              </span>
-            </div>
-            <button
-              onClick={() => setActiveFilter(null)}
-              className="px-4 py-2 bg-spotify-gray hover:bg-spotify-green hover:text-spotify-black transition-colors rounded-lg font-medium"
-            >
-              Clear Filter
-            </button>
-          </div>
-        )}
-        
-        {/* Top Lists and Charts - New Layout */}
+        {/* Top Lists and Charts - Height driven by Top 10 list */}
         <div className="flex gap-6">
-          {/* Left Side: Top Lists (1/3 width) */}
-          <div className="flex-1">
+          {/* Left Side: Top Lists (30% width) - Defines height */}
+          <div className="w-[30%]">
             <TopLists
               topArtists={topArtists}
               topTracks={topTracks}
@@ -209,27 +188,33 @@ function App() {
             />
           </div>
           
-          {/* Right Side: Charts (2/3 width) */}
-          <div className="flex-[2] flex flex-col gap-6">
-            {/* Listening Over Time Chart */}
-            <ListeningOverTime
-              data={listeningOverTime}
-              timeUnit={timeUnit}
-              timePeriod={timePeriod}
-              onTimePeriodChange={handleTimePeriodChange}
-            />
-            
-            {/* Clock and Table - Side by Side */}
-            <div className="grid grid-cols-2 gap-6">
-              <ListeningClock
-                data={listeningByHour}
-                timeUnit={timeUnit}
-              />
+          {/* Right Side: Charts (70% width) - Matches Top 10 height */}
+          <div className="w-[70%] flex flex-col gap-6">
+            {/* Clock and Table - Side by Side with 35:65 ratio - Defines its own height */}
+            <div className="flex gap-6">
+              <div className="w-[35%]">
+                <ListeningClock
+                  data={listeningByHour}
+                  timeUnit={timeUnit}
+                />
+              </div>
               
-              <TimePeriodTable
-                dataArtists={timePeriodDataArtists}
-                dataSongs={timePeriodDataSongs}
+              <div className="w-[65%]">
+                <TimePeriodTable
+                  dataArtists={timePeriodDataArtists}
+                  dataSongs={timePeriodDataSongs}
+                  timeUnit={timeUnit}
+                />
+              </div>
+            </div>
+            
+            {/* Listening Over Time Chart - Fills remaining height */}
+            <div className="flex-1">
+              <ListeningOverTime
+                data={listeningOverTime}
                 timeUnit={timeUnit}
+                timePeriod={timePeriod}
+                onTimePeriodChange={handleTimePeriodChange}
               />
             </div>
           </div>

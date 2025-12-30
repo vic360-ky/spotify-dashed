@@ -10,7 +10,7 @@ const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }
   };
   
   return (
-    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl">
+    <div className="bg-spotify-black border-2 border-spotify-green p-6 rounded-2xl flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-3xl font-bold text-white">Top 10</h2>
         
@@ -65,16 +65,16 @@ const TopLists = ({ topArtists, topTracks, timeUnit, activeFilter, onItemClick }
                 </span>
               </div>
               
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 overflow-hidden">
                 {isArtistMode ? (
-                  <p className={`font-bold truncate text-xl ${
+                  <p className={`font-bold text-xl truncate ${
                     isActive ? 'text-spotify-black' : 'text-white'
                   }`}>
                     {item.artist}
                   </p>
                 ) : (
                   <>
-                    <p className={`font-bold truncate text-xl ${
+                    <p className={`font-bold text-xl truncate ${
                       isActive ? 'text-spotify-black' : 'text-white'
                     }`}>
                       {item.trackName}
